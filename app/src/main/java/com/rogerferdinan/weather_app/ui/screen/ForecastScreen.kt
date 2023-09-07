@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rogerferdinan.weather_app.R
 import com.rogerferdinan.weather_app.data.Weather
+import com.rogerferdinan.weather_app.viewmodel.weatherViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
