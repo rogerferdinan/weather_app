@@ -4,7 +4,7 @@ import androidx.annotation.DrawableRes
 
 data class Weather(
     @DrawableRes
-    val icon: Int,
-    val degree: Int,
-    val title: String
+    var icon: Int,
+    var degree: Float,
+    var title: String
 )
