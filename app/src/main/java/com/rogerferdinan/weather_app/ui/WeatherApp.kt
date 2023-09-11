@@ -12,14 +12,14 @@ import com.rogerferdinan.weather_app.ui.screen.ForecastScreen
 import com.rogerferdinan.weather_app.ui.screen.HistoricalScreen
 import com.rogerferdinan.weather_app.viewmodel.WeatherViewModel
 
-@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun WeatherApp(){
     var navController = rememberNavController()
-    var ui_state: WeatherViewModel = viewModel()
+    var viewModel: WeatherViewModel = viewModel()
 
-    val degree by ui_state.currentWeatherState.collectAsState()
-    ui_state.getCurrentWeather(-6.2146f, 106.8451f)
+    val uiState by viewModel.uiState.collectAsState()
+
+    var currentDegree = uiState.current_weather.temperature
 
     NavHost(
         navController = navController,
@@ -27,10 +27,11 @@ fun WeatherApp(){
     ) {
         composable(route = "ForecastScreen"){
             ForecastScreen(
+                currentDegree = currentDegree,
+                weatherIcon = viewModel.getWeatherIcon(currentDegree),
                 foreCastClick = {
                     navController.navigate("ForecastScreen")
-                },
-                degree = degree.current_weather.temperature
+                }
             ){
                 navController.navigate("HistoricalScreen")
             }

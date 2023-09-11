@@ -1,10 +1,12 @@
 package com.rogerferdinan.weather_app.viewmodel
 
 import android.util.Log
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.rogerferdinan.weather_app.data.CurrentWeather
-import com.rogerferdinan.weather_app.data.WeatherData
+import com.rogerferdinan.weather_app.R
+import com.rogerferdinan.weather_app.data.WeatherUiState
 import com.rogerferdinan.weather_app.network.WeatherApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,9 +15,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class WeatherViewModel: ViewModel() {
-    private val _currentWeatherState = MutableStateFlow(WeatherData())
-    val currentWeatherState: StateFlow<WeatherData> = _currentWeatherState.asStateFlow()
+    private val _uiState = MutableStateFlow(WeatherUiState())
+    val uiState: StateFlow<WeatherUiState> = _uiState.asStateFlow()
 
+    init {
+        getCurrentWeather(-6.2146f, 106.8451f)
+    }
     fun getCurrentWeather(latitude: Float, longitude: Float) {
         viewModelScope.launch {
             val result = WeatherApi.api.getForecast(latitude, longitude)
@@ -23,11 +28,16 @@ class WeatherViewModel: ViewModel() {
                 val latitude = result.body()!!.latitude
                 val longitude = result.body()!!.longitude
                 val currentWeather = result.body()!!.current_weather
-                _currentWeatherState.update {currentState ->
+                _uiState.update {currentState ->
                     currentState.copy(latitude = latitude, longitude = longitude, current_weather = currentWeather)
                 }
-                Log.d("testing", currentWeather.toString())
+//                Log.d("testing", currentWeather.toString())
             }
         }
+    }
+    fun getWeatherIcon(degree: Float): Int{
+        if(degree<15.0f) return R.drawable.cold
+        else if(degree>=15 && degree<30) return R.drawable.cloudy
+        else return R.drawable.hot
     }
 }
