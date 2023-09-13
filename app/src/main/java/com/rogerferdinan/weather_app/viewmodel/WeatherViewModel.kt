@@ -1,11 +1,10 @@
 package com.rogerferdinan.weather_app.viewmodel
 
 import android.util.Log
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rogerferdinan.weather_app.R
+import com.rogerferdinan.weather_app.data.DailyWeather
 import com.rogerferdinan.weather_app.data.WeatherUiState
 import com.rogerferdinan.weather_app.network.WeatherApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +14,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class WeatherViewModel: ViewModel() {
-    private val _uiState = MutableStateFlow(WeatherUiState())
+    private val _uiState = MutableStateFlow(WeatherUiState(daily = DailyWeather(emptyList(), emptyList())))
     val uiState: StateFlow<WeatherUiState> = _uiState.asStateFlow()
 
     init {
@@ -23,15 +22,20 @@ class WeatherViewModel: ViewModel() {
     }
     fun getCurrentWeather(latitude: Float, longitude: Float) {
         viewModelScope.launch {
-            val result = WeatherApi.api.getForecast(latitude, longitude)
+            val result = WeatherApi.api.getForecast(latitude, longitude, forecast_days = 3)
             if(result.isSuccessful) {
                 val latitude = result.body()!!.latitude
                 val longitude = result.body()!!.longitude
                 val currentWeather = result.body()!!.current_weather
+                val daily = result.body()!!.daily
                 _uiState.update {currentState ->
-                    currentState.copy(latitude = latitude, longitude = longitude, current_weather = currentWeather)
+                    currentState.copy(
+                        latitude = latitude,
+                        longitude = longitude,
+                        current_weather = currentWeather,
+                        daily = daily
+                    )
                 }
-//                Log.d("testing", currentWeather.toString())
             }
         }
     }

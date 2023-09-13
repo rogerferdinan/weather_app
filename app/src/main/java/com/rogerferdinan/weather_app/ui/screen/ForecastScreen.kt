@@ -32,6 +32,7 @@ import com.rogerferdinan.weather_app.viewmodel.WeatherViewModel
 @Composable
 fun ForecastScreen(
     currentDegree: Float,
+    foreCastDegree: List<Float>,
     weatherIcon: Int,
     foreCastClick: ()-> Unit,
     historicalClick: ()-> Unit
@@ -61,8 +62,9 @@ fun ForecastScreen(
             Row(
                 modifier = Modifier.weight(2f)
             ) {
-                WeatherAndDegree(modifier = Modifier.weight(1f), degree = currentDegree, weatherIcon = weatherIcon)
-                WeatherAndDegree(modifier = Modifier.weight(1f), degree = currentDegree, weatherIcon = weatherIcon)
+                foreCastDegree.forEach {degree ->
+                    WeatherAndDegree(degree = degree, weatherIcon = weatherIcon)
+                }
             }
         }
     }
@@ -137,18 +139,5 @@ fun WeatherAndDegree(
             modifier = Modifier.weight(2f)
         )
         Text(text = "${degree}°", fontSize = size.sp, modifier = Modifier.weight(2f))
-    }
-}
-@Composable
-@Preview(showBackground = true)
-fun preview(){
-    var viewModel: WeatherViewModel = viewModel()
-    var currentDegree = 10.0f
-    ForecastScreen(
-        foreCastClick = { /*TODO*/ },
-        currentDegree = currentDegree,
-        weatherIcon = viewModel.getWeatherIcon(currentDegree)
-    ) {
-
     }
 }

@@ -1,7 +1,6 @@
 package com.rogerferdinan.weather_app
 
 import com.rogerferdinan.weather_app.network.WeatherApi
-import com.rogerferdinan.weather_app.network.WeatherService
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -16,7 +15,7 @@ class WeatherUnitTest {
     fun get_current_weather() = runTest() {
         val weatherApi = WeatherApi.api
         launch {
-            val result = weatherApi.getForecast(52f, 15f)
+            val result = weatherApi.getForecast(52f, 15f, forecast_days = 3)
             if(result.isSuccessful) {
                 print(result.body())
             }

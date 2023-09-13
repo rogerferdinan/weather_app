@@ -20,6 +20,7 @@ fun WeatherApp(){
     val uiState by viewModel.uiState.collectAsState()
 
     var currentDegree = uiState.current_weather.temperature
+    var foreCastDegree = uiState.daily.temperature
 
     NavHost(
         navController = navController,
@@ -28,6 +29,7 @@ fun WeatherApp(){
         composable(route = "ForecastScreen"){
             ForecastScreen(
                 currentDegree = currentDegree,
+                foreCastDegree = foreCastDegree,
                 weatherIcon = viewModel.getWeatherIcon(currentDegree),
                 foreCastClick = {
                     navController.navigate("ForecastScreen")

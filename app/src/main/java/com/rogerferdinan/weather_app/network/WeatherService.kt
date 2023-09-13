@@ -10,6 +10,9 @@ interface WeatherService {
     suspend fun getForecast(
         @Query("latitude") latitude: Float,
         @Query("longitude") longitude: Float,
-        @Query("current_weather") current_weather: Boolean = true
+        @Query("current_weather") current_weather: Boolean = true,
+        @Query("forecast_days") forecast_days: Int = 0,
+        @Query("timezone") timezone: String = "auto",
+        @Query("daily") daily: String = "temperature_2m_max"
     ): Response<WeatherUiState>
 }
