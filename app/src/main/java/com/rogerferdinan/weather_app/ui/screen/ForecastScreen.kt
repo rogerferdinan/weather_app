@@ -16,6 +16,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,7 +27,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.rememberNavController
 import com.rogerferdinan.weather_app.R
+import com.rogerferdinan.weather_app.ui.WeatherApp
 import com.rogerferdinan.weather_app.viewmodel.WeatherViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -34,6 +38,7 @@ fun ForecastScreen(
     currentDegree: Float,
     foreCastDegree: List<Float>,
     weatherIcon: Int,
+    windSpeed: Float,
     foreCastClick: ()-> Unit,
     historicalClick: ()-> Unit
 ){
@@ -57,13 +62,18 @@ fun ForecastScreen(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
-                WeatherAndDegree(size = 75, degree = currentDegree, weatherIcon = weatherIcon)
+                WeatherAndDegree(size = 30, degree = currentDegree, weatherIcon = weatherIcon, windSpeed = windSpeed)
             }
             Row(
                 modifier = Modifier.weight(2f)
             ) {
                 foreCastDegree.forEach {degree ->
-                    WeatherAndDegree(degree = degree, weatherIcon = weatherIcon)
+                    WeatherAndDegree(
+                        degree = degree,
+                        weatherIcon = weatherIcon,
+                        windSpeed = windSpeed,
+                        modifier = Modifier.weight(1f)
+                    )
                 }
             }
         }
@@ -125,8 +135,9 @@ private fun BottomBar(
 @Composable
 fun WeatherAndDegree(
     modifier: Modifier = Modifier,
-    size: Int = 40,
+    size: Int=20,
     degree: Float,
+    windSpeed: Float,
     weatherIcon: Int
 ){
     Column(
@@ -135,9 +146,22 @@ fun WeatherAndDegree(
     ){
         Image(
             painter = painterResource(id = weatherIcon),
-            contentDescription = null,
-            modifier = Modifier.weight(2f)
+            contentDescription = null
         )
-        Text(text = "${degree}°", fontSize = size.sp, modifier = Modifier.weight(2f))
+        Text(
+            text = "${degree}°",
+            fontSize = size.sp
+        )
+        Text(
+            text = "${windSpeed}Km/H",
+            fontSize = size.sp
+        )
     }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun preview(){
+    var viewModel: WeatherViewModel = viewModel()
+    WeatherAndDegree(degree = 30f, windSpeed = 20f, weatherIcon = viewModel.getWeatherIcon(30f))
 }

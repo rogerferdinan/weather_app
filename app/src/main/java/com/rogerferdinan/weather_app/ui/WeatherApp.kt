@@ -21,6 +21,7 @@ fun WeatherApp(){
 
     var currentDegree = uiState.current_weather.temperature
     var foreCastDegree = uiState.daily.temperature
+    var windSpeed = uiState.current_weather.windspeed
 
     NavHost(
         navController = navController,
@@ -31,6 +32,7 @@ fun WeatherApp(){
                 currentDegree = currentDegree,
                 foreCastDegree = foreCastDegree,
                 weatherIcon = viewModel.getWeatherIcon(currentDegree),
+                windSpeed = viewModel.toKmPerHour(windSpeed),
                 foreCastClick = {
                     navController.navigate("ForecastScreen")
                 }
