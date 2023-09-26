@@ -42,26 +42,26 @@ class WeatherViewModel: ViewModel() {
                         daily = daily
                     )
                 }
-                val weather = WeatherUiState(latitude, longitude, currentWeather, daily)
-                weatherDao.insert(weather)
+//                val weather = WeatherUiState(latitude, longitude, currentWeather, daily)
+//                weatherDao.insert(weather)
             }else{
                 // jika offline
                 val weatherData = weatherDao.getLastData()
 
-                if(weatherData != null){ // Buat hindarin miss data type karena nullable
-                    val latitude = weatherData.latitude
-                    val longitude = weatherData.longitude
-                    val currentWeather = weatherData.current_weather
-                    val daily = weatherData.daily
-                    _uiState.update {currentState ->
-                        currentState.copy(
-                            latitude = latitude,
-                            longitude = longitude,
-                            current_weather = currentWeather,
-                            daily = daily
-                        )
-                    }
-                }
+//                if(weatherData != null){ // Buat hindarin miss data type karena nullable
+//                    val latitude = weatherData.latitude
+//                    val longitude = weatherData.longitude
+//                    val currentWeather = weatherData.current_weather
+//                    val daily = weatherData.daily
+//                    _uiState.update {currentState ->
+//                        currentState.copy(
+//                            latitude = latitude,
+//                            longitude = longitude,
+//                            current_weather = currentWeather,
+//                            daily = daily
+//                        )
+//                    }
+//                }
 
             }
         }
@@ -79,8 +79,8 @@ class WeatherViewModel: ViewModel() {
     fun databaseIsEmpty(weatherDao: WeatherDao){
         val data = weatherDao.getLastData()
         if(data == null) {
-            val weather = WeatherUiState(0.0f, 0.0f, Weather(0f, 0f, 0))
-            weatherDao.insert(weather)
+//            val weather = WeatherUiState(0.0f, 0.0f, Weather(0f, 0f, 0))
+//            weatherDao.insert(weather)
         }
     }
 }

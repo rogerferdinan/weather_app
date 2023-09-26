@@ -25,14 +25,14 @@ fun WeatherApp(){
         WeatherAppDb::class.java,
         "weather_db"
     ).build()
-    val weatherDao = db.weatherDao()
+//    val weatherDao = db.weatherDao()
 
     var navController = rememberNavController()
     var viewModel: WeatherViewModel = viewModel()
 
-    viewModel.databaseIsEmpty(weatherDao)
+//    viewModel.databaseIsEmpty(weatherDao)
 
-    viewModel.getCurrentWeather(-6.2146f, 106.8451f, weatherDao)
+//    viewModel.getCurrentWeather(-6.2146f, 106.8451f, weatherDao)
     val uiState by viewModel.uiState.collectAsState()
 
     var currentDegree = uiState.current_weather.temperature
